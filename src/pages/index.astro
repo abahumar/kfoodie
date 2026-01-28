@@ -4,222 +4,207 @@ import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog');
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const latestPosts = posts.slice(0, 3);
+// Fetch all posts for client-side filtering, or a reasonable limit like 12
+const latestPosts = posts; 
 ---
 
 <BlogLayout title="KelantanFoodie - Discover the Best Food in Kelantan">
-	<section class="hero">
-		<div class="hero-content">
-			<h1>Welcome to KelantanFoodie</h1>
-			<p class="tagline">Discover the best authentic food in Kelantan, from Nasi Kerabu to Colek Malah.</p>
-			<a href="/kfoodie/blog" class="cta-button">Explore Food</a>
-		</div>
-		<div class="hero-image-wrapper">
-			<img src="/kfoodie/images/hero.png" alt="Delicious Kelantan Food" class="hero-image" />
-		</div>
-	</section>
-
-	<section class="categories">
-		<h2>Top Categories</h2>
-		<div class="category-grid">
-			<a href="/kfoodie/blog/category/nasi-kerabu" class="category-card">
-				<span class="emoji">🍚</span>
-				<span>Nasi Kerabu</span>
-			</a>
-			<a href="/kfoodie/blog/category/street-food" class="category-card">
-				<span class="emoji">🍢</span>
-				<span>Street Food</span>
-			</a>
-			<a href="/kfoodie/blog/category/cafe" class="category-card">
-				<span class="emoji">☕</span>
-				<span>Cafe</span>
-			</a>
-			<a href="/kfoodie/blog/category/kuih-tradisional" class="category-card">
-				<span class="emoji">🧁</span>
-				<span>Kuih Tradisional</span>
-			</a>
+	<!-- Hero text section -->
+	<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
+			<div>
+				<h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight tracking-tight">
+					<span class="text-primary block mb-2">KelantanFoodie</span>
+					Food Blog
+				</h1>
+			</div>
+			<div class="lg:pb-4">
+				<p class="text-xl text-gray-600 max-w-lg">
+					Honest Conversations About <br class="hidden md:block" />
+					Authentic Flavors and Hidden Gems
+				</p>
+			</div>
 		</div>
 	</section>
 
-	<section class="latest-posts">
-		<h2>Latest Discoveries</h2>
+	<!-- Filters and Search -->
+	<section class="border-b border-gray-200 mb-12 sticky top-0 bg-white/90 backdrop-blur-md z-20">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="flex flex-col md:flex-row justify-between items-center py-4 gap-4">
+				<!-- Category Tabs -->
+				<div class="flex flex-wrap items-center gap-3 w-full md:w-auto" id="category-filters">
+					<button data-tab="all" class="category-tab px-5 py-2 rounded-full text-sm font-medium transition-colors bg-primary text-white shadow-sm">All</button>
+					<button data-tab="nasi-kerabu" class="category-tab px-5 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">Nasi Kerabu</button>
+					<button data-tab="street-food" class="category-tab px-5 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">Street Food</button>
+					<button data-tab="cafe" class="category-tab px-5 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">Cafe</button>
+					<button data-tab="kuih-tradisional" class="category-tab px-5 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200">Kuih</button>
+				</div>
+				
+				<!-- Search Bar -->
+				<div class="w-full md:w-auto relative mt-4 md:mt-0">
+					<input 
+						type="text" 
+						id="search-input"
+						placeholder="Search blog..." 
+						class="w-full md:w-64 bg-gray-100 rounded-full px-5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/20 transition-all text-gray-700 placeholder-gray-400"
+					/>
+					<svg class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+					</svg>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Blog Grid -->
+	<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
 		{latestPosts.length > 0 ? (
-			<ul class="post-grid">
-				{latestPosts.map(post => (
-					<li>
-						<a href={`/kfoodie/blog/${post.slug}`} class="post-card">
-							{post.data.image && <img src={post.data.image} alt={post.data.title} />}
-							<div class="post-info">
-								<h3>{post.data.title}</h3>
-								<p>{post.data.description}</p>
+			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3" id="posts-grid">
+				{latestPosts.map(post => {
+					// Use actual category from post data, fallback to 'Uncategorized'
+					// Normalize for data-attribute matching (lowercase, hyphens)
+					const rawCategory = post.data.category || "Uncategorized";
+					const categorySlug = rawCategory.toLowerCase().replace(/\s+/g, '-');
+					return (
+						<article 
+							class="group cursor-pointer post-item" 
+							data-category={categorySlug}
+							data-title={post.data.title.toLowerCase()}
+							data-description={post.data.description.toLowerCase()}
+						>
+							<a href={`/kfoodie/blog/${post.slug}`} class="block relative rounded-3xl overflow-hidden aspect-[4/3] mb-6 bg-gray-100">
+								{post.data.image && (
+									<img 
+										src={post.data.image} 
+										alt={post.data.title} 
+										class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+									/>
+								)}
+								
+								<!-- Hover overlay gradient -->
+								<div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+
+								<!-- Arrow Button -->
+								<div class="absolute bottom-4 right-4 w-10 h-10 bg-black/30 backdrop-blur-sm rounded-xl flex items-center justify-center text-white group-hover:bg-primary group-hover:text-white transition-all duration-300">
+									<svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M1 11L11 1M11 1H1M11 1V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+								</div>
+							</a>
+							
+							<div class="space-y-3">
+								<div class="inline-block px-3 py-1 rounded-full bg-gray-100 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+									{rawCategory}
+								</div>
+								
+								<h3 class="text-xl font-bold text-gray-900 leading-snug group-hover:text-primary transition-colors">
+									<a href={`/kfoodie/blog/${post.slug}`}>
+										{post.data.title}
+									</a>
+								</h3>
+								
+								<p class="text-gray-500 text-sm leading-relaxed line-clamp-3">
+									{post.data.description}
+								</p>
 							</div>
-						</a>
-					</li>
-				))}
-			</ul>
+						</article>
+					)
+				})}
+			</div>
 		) : (
-			<p>No posts yet. Stay tuned!</p>
+			<div class="text-center py-20 bg-gray-50 rounded-3xl">
+				<p class="text-gray-500">No posts found.</p>
+			</div>
 		)}
-	</section>
-	
-	<section class="about-short">
-		<h2>About KelantanFoodie</h2>
-		<p>We are locals on a mission to document every delicious corner of Kelantan. Join us on our gastronomic journey!</p>
+		
+		<!-- No Results Message (Hidden by default) -->
+		<div id="no-results" class="hidden text-center py-20 bg-gray-50 rounded-3xl">
+			<p class="text-gray-500 text-lg">No posts match your filters.</p>
+			<button id="clear-filters" class="mt-4 text-primary font-medium hover:underline">Clear Filters</button>
+		</div>
 	</section>
 </BlogLayout>
 
-<style>
-	.hero {
-		display: flex;
-		align-items: center;
-		gap: 3rem;
-		padding: 4rem 0;
-	}
-	.hero-content {
-		flex: 1;
-	}
-	h1 {
-		font-size: 3rem;
-		margin-bottom: 1rem;
-		color: #d32f2f;
-		line-height: 1.2;
-	}
-	.tagline {
-		font-size: 1.2rem;
-		color: #555;
-		margin-bottom: 2rem;
-		line-height: 1.6;
-	}
-	.hero-image-wrapper {
-		flex: 1;
-	}
-	.hero-image {
-		width: 100%;
-		border-radius: 16px;
-		box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-		transition: transform 0.3s ease;
-	}
-	.hero-image:hover {
-		transform: translateY(-5px);
-	}
-	.cta-button {
-		display: inline-block;
-		padding: 1rem 2rem;
-		background: #d32f2f;
-		color: white;
-		text-decoration: none;
-		border-radius: 50px;
-		font-weight: bold;
-		transition: background 0.2s;
-	}
-	.cta-button:hover {
-		background: #b71c1c;
-	}
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const tabs = document.querySelectorAll('.category-tab');
+		const searchInput = document.getElementById('search-input');
+		const posts = document.querySelectorAll('.post-item');
+		const noResults = document.getElementById('no-results');
+		const clearFiltersBtn = document.getElementById('clear-filters');
 
-	section {
-		padding: 3rem 0;
-	}
-	section h2 {
-		text-align: center;
-		margin-bottom: 2rem;
-		font-size: 2rem;
-		color: #333;
-	}
+		let currentCategory = 'all';
+		let currentSearch = '';
 
-	/* Categories */
-	.category-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-		gap: 1.5rem;
-	}
-	.category-card {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 2rem;
-		background: #fff;
-		border: 1px solid #eee;
-		text-decoration: none;
-		color: #333;
-		font-weight: bold;
-		border-radius: 12px;
-		transition: all 0.2s;
-		box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-	}
-	.category-card:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-		border-color: #d32f2f;
-		color: #d32f2f;
-	}
-	.emoji {
-		font-size: 2.5rem;
-		margin-bottom: 0.5rem;
-	}
+		function filterPosts() {
+			let visibleCount = 0;
 
-	/* Latest Posts */
-	.post-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		gap: 2rem;
-		list-style: none;
-		padding: 0;
-	}
-	.post-card {
-		display: block;
-		text-decoration: none;
-		background: #fff;
-		border-radius: 12px;
-		overflow: hidden;
-		box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-		transition: transform 0.2s;
-		height: 100%;
-		border: 1px solid #f0f0f0;
-	}
-	.post-card:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-	}
-	.post-card img {
-		width: 100%;
-		height: 200px;
-		object-fit: cover;
-	}
-	.post-info {
-		padding: 1.5rem;
-	}
-	.post-info h3 {
-		margin: 0 0 0.5rem 0;
-		color: #111;
-		font-size: 1.25rem;
-	}
-	.post-info p {
-		color: #666;
-		font-size: 0.95rem;
-		margin: 0;
-		line-height: 1.5;
-	}
-	
-	.about-short {
-		text-align: center;
-		background: #f8f9fa;
-		border-radius: 16px;
-		padding: 4rem 2rem;
-		margin-top: 2rem;
-	}
+			posts.forEach(post => {
+				const category = post.getAttribute('data-category');
+				const title = post.getAttribute('data-title');
+				const description = post.getAttribute('data-description');
 
-	@media(max-width: 768px) {
-		.hero {
-			flex-direction: column-reverse;
-			text-align: center;
-			padding: 2rem 0;
+				// Check category match
+				// Note: flexible matching so 'kuih-tradisional' matches 'kuih' tab if needed, 
+				// or strict match. We'll utilize includes for flexibility or strict equality.
+				// Based on tabs, strict equality is safer for 'all', but 'kuih' might be shorthand for 'kuih-tradisional'
+				const isAll = currentCategory === 'all';
+				const categoryMatch = isAll || (category && category.includes(currentCategory));
+
+				// Check search match
+				const searchMatch = !currentSearch || 
+					(title && title.includes(currentSearch)) || 
+					(description && description.includes(currentSearch));
+
+				if (categoryMatch && searchMatch) {
+					post.classList.remove('hidden');
+					visibleCount++;
+				} else {
+					post.classList.add('hidden');
+				}
+			});
+
+			if (visibleCount === 0) {
+				noResults.classList.remove('hidden');
+			} else {
+				noResults.classList.add('hidden');
+			}
 		}
-		.hero-image-wrapper {
-			width: 100%;
-		}
-		h1 {
-			font-size: 2.5rem;
-		}
-	}
-</style>
+
+		// Tab Click Event
+		tabs.forEach(tab => {
+			tab.addEventListener('click', () => {
+				// Update active state style
+				tabs.forEach(t => {
+					t.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+					t.classList.add('bg-gray-100', 'text-gray-600', 'hover:bg-gray-200');
+				});
+				tab.classList.remove('bg-gray-100', 'text-gray-600', 'hover:bg-gray-200');
+				tab.classList.add('bg-primary', 'text-white', 'shadow-sm');
+
+				currentCategory = tab.getAttribute('data-tab');
+				filterPosts();
+			});
+		});
+
+		// Search Input Event
+		searchInput.addEventListener('input', (e) => {
+			currentSearch = (e.target as HTMLInputElement).value.toLowerCase();
+			filterPosts();
+		});
+
+		// Clear Filters
+		clearFiltersBtn.addEventListener('click', () => {
+			currentSearch = '';
+			currentCategory = 'all';
+			(searchInput as HTMLInputElement).value = '';
+			
+			// Reset tabs
+			tabs.forEach(t => {
+				if (t.getAttribute('data-tab') === 'all') {
+					t.click();
+				}
+			});
+		});
+	});
+</script>
