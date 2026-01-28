@@ -1,0 +1,60 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BlogLayout title="Blog - KelantanFoodie" description="Latest food reviews and discoveries in Kelantan.">
+	<h1>Latest Food Adventures</h1>
+	<ul class="post-list">
+		{posts.map(post => (
+			<li>
+				<a href={`/blog/${post.slug}`} class="post-link">
+					<h2 class="post-title">{post.data.title}</h2>
+				</a>
+				<div class="post-meta">
+					<time>{post.data.pubDate.toLocaleDateString('en-MY', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+					<span class="category">{post.data.category}</span>
+				</div>
+				<p>{post.data.description}</p>
+			</li>
+		))}
+	</ul>
+</BlogLayout>
+
+<style>
+	.post-list {
+		list-style: none;
+		padding: 0;
+	}
+	li {
+		margin-bottom: 2rem;
+		border-bottom: 1px solid #eee;
+		padding-bottom: 2rem;
+	}
+	.post-link {
+		text-decoration: none;
+		color: inherit;
+	}
+	.post-title {
+		margin-bottom: 0.5rem;
+		color: #d32f2f; /* Red from theme idea maybe? or just dark red */
+	}
+	.post-link:hover .post-title {
+		text-decoration: underline;
+	}
+	.post-meta {
+		font-size: 0.9rem;
+		color: #666;
+		margin-bottom: 0.5rem;
+	}
+	.category {
+		background: #f0f0f0;
+		padding: 0.2rem 0.5rem;
+		border-radius: 4px;
+		margin-left: 0.5rem;
+		font-size: 0.8rem;
+	}
+</style>

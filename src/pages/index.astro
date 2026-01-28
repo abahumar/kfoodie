@@ -1,17 +1,225 @@
 ---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { getCollection } from 'astro:content';
 
+const posts = await getCollection('blog');
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const latestPosts = posts.slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BlogLayout title="KelantanFoodie - Discover the Best Food in Kelantan">
+	<section class="hero">
+		<div class="hero-content">
+			<h1>Welcome to KelantanFoodie</h1>
+			<p class="tagline">Discover the best authentic food in Kelantan, from Nasi Kerabu to Colek Malah.</p>
+			<a href="/blog" class="cta-button">Explore Food</a>
+		</div>
+		<div class="hero-image-wrapper">
+			<img src="/images/hero.png" alt="Delicious Kelantan Food" class="hero-image" />
+		</div>
+	</section>
+
+	<section class="categories">
+		<h2>Top Categories</h2>
+		<div class="category-grid">
+			<a href="/blog/category/nasi-kerabu" class="category-card">
+				<span class="emoji">🍚</span>
+				<span>Nasi Kerabu</span>
+			</a>
+			<a href="/blog/category/street-food" class="category-card">
+				<span class="emoji">🍢</span>
+				<span>Street Food</span>
+			</a>
+			<a href="/blog/category/cafe" class="category-card">
+				<span class="emoji">☕</span>
+				<span>Cafe</span>
+			</a>
+			<a href="/blog/category/kuih-tradisional" class="category-card">
+				<span class="emoji">🧁</span>
+				<span>Kuih Tradisional</span>
+			</a>
+		</div>
+	</section>
+
+	<section class="latest-posts">
+		<h2>Latest Discoveries</h2>
+		{latestPosts.length > 0 ? (
+			<ul class="post-grid">
+				{latestPosts.map(post => (
+					<li>
+						<a href={`/blog/${post.slug}`} class="post-card">
+							{post.data.image && <img src={post.data.image} alt={post.data.title} />}
+							<div class="post-info">
+								<h3>{post.data.title}</h3>
+								<p>{post.data.description}</p>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+		) : (
+			<p>No posts yet. Stay tuned!</p>
+		)}
+	</section>
+	
+	<section class="about-short">
+		<h2>About KelantanFoodie</h2>
+		<p>We are locals on a mission to document every delicious corner of Kelantan. Join us on our gastronomic journey!</p>
+	</section>
+</BlogLayout>
+
+<style>
+	.hero {
+		display: flex;
+		align-items: center;
+		gap: 3rem;
+		padding: 4rem 0;
+	}
+	.hero-content {
+		flex: 1;
+	}
+	h1 {
+		font-size: 3rem;
+		margin-bottom: 1rem;
+		color: #d32f2f;
+		line-height: 1.2;
+	}
+	.tagline {
+		font-size: 1.2rem;
+		color: #555;
+		margin-bottom: 2rem;
+		line-height: 1.6;
+	}
+	.hero-image-wrapper {
+		flex: 1;
+	}
+	.hero-image {
+		width: 100%;
+		border-radius: 16px;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+		transition: transform 0.3s ease;
+	}
+	.hero-image:hover {
+		transform: translateY(-5px);
+	}
+	.cta-button {
+		display: inline-block;
+		padding: 1rem 2rem;
+		background: #d32f2f;
+		color: white;
+		text-decoration: none;
+		border-radius: 50px;
+		font-weight: bold;
+		transition: background 0.2s;
+	}
+	.cta-button:hover {
+		background: #b71c1c;
+	}
+
+	section {
+		padding: 3rem 0;
+	}
+	section h2 {
+		text-align: center;
+		margin-bottom: 2rem;
+		font-size: 2rem;
+		color: #333;
+	}
+
+	/* Categories */
+	.category-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+		gap: 1.5rem;
+	}
+	.category-card {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem;
+		background: #fff;
+		border: 1px solid #eee;
+		text-decoration: none;
+		color: #333;
+		font-weight: bold;
+		border-radius: 12px;
+		transition: all 0.2s;
+		box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+	}
+	.category-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+		border-color: #d32f2f;
+		color: #d32f2f;
+	}
+	.emoji {
+		font-size: 2.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	/* Latest Posts */
+	.post-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 2rem;
+		list-style: none;
+		padding: 0;
+	}
+	.post-card {
+		display: block;
+		text-decoration: none;
+		background: #fff;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+		transition: transform 0.2s;
+		height: 100%;
+		border: 1px solid #f0f0f0;
+	}
+	.post-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+	}
+	.post-card img {
+		width: 100%;
+		height: 200px;
+		object-fit: cover;
+	}
+	.post-info {
+		padding: 1.5rem;
+	}
+	.post-info h3 {
+		margin: 0 0 0.5rem 0;
+		color: #111;
+		font-size: 1.25rem;
+	}
+	.post-info p {
+		color: #666;
+		font-size: 0.95rem;
+		margin: 0;
+		line-height: 1.5;
+	}
+	
+	.about-short {
+		text-align: center;
+		background: #f8f9fa;
+		border-radius: 16px;
+		padding: 4rem 2rem;
+		margin-top: 2rem;
+	}
+
+	@media(max-width: 768px) {
+		.hero {
+			flex-direction: column-reverse;
+			text-align: center;
+			padding: 2rem 0;
+		}
+		.hero-image-wrapper {
+			width: 100%;
+		}
+		h1 {
+			font-size: 2.5rem;
+		}
+	}
+</style>

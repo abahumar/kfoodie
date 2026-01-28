@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map(post => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<BlogLayout title={post.data.title} description={post.data.description}>
+	<article>
+		<header>
+			<h1>{post.data.title}</h1>
+			<div class="meta">
+				<time>{post.data.pubDate.toLocaleDateString('en-MY', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+				<span class="divider">|</span>
+				<span class="category">{post.data.category}</span>
+			</div>
+		</header>
+		{post.data.image && <img src={post.data.image} alt={post.data.title} class="featured-image" />}
+		<div class="content">
+			<Content />
+		</div>
+	</article>
+</BlogLayout>
+
+<style>
+	article {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+	header {
+		margin-bottom: 2rem;
+		text-align: center;
+	}
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 0.5rem;
+	}
+	.meta {
+		color: #666;
+	}
+	.divider {
+		margin: 0 0.5rem;
+	}
+	.category {
+		font-weight: bold;
+		color: #d32f2f;
+	}
+	.featured-image {
+		width: 100%;
+		height: auto;
+		border-radius: 8px;
+		margin-bottom: 2rem;
+	}
+	.content {
+		line-height: 1.6;
+		font-size: 1.1rem;
+	}
+	/* Add some markdown content styles */
+	.content :global(h2) {
+		margin-top: 2rem;
+	}
+	.content :global(ul) {
+		padding-left: 1.5rem;
+	}
+</style>
