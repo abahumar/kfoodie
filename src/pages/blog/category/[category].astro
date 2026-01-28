@@ -24,7 +24,7 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 <BlogLayout title={`${category} - KelantanFoodie`} description={`Best ${category} in Kelantan.`}>
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 		<div class="mb-12">
-			<a href="/kfoodie/" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary mb-6 transition-colors">
+			<a href="/" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary mb-6 transition-colors">
 				<svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
 				</svg>
@@ -69,7 +69,7 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 								</div>
 								
 								<h2 class="text-xl font-bold text-gray-900 leading-snug group-hover:text-primary transition-colors">
-									<a href={`/kfoodie/blog/${post.slug}`}>
+									<a href={`/blog/${post.slug}`}>
 										{post.data.title}
 									</a>
 								</h2>
@@ -89,7 +89,7 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 		) : (
 			<div class="text-center py-20 bg-gray-50 rounded-3xl border border-gray-100">
 				<p class="text-gray-500 text-lg">No posts found for this category.</p>
-				<a href="/kfoodie/" class="mt-4 inline-block text-primary font-medium hover:underline">Explore other categories</a>
+				<a href="/" class="mt-4 inline-block text-primary font-medium hover:underline">Explore other categories</a>
 			</div>
 		)}
 	</div>

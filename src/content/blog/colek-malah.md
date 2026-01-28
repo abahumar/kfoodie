@@ -4,7 +4,7 @@ description: "The viral fruity and spicy snack that locals love. A perfect mix o
 pubDate: 2023-10-05
 category: "Street Food"
 tags: ["spicy", "fruit", "nightmarket"]
-image: "/kfoodie/images/colek-malah.png"
+image: "/images/colek-malah.png"
 ---
 
 # Colek Malah

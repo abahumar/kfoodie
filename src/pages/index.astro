@@ -72,7 +72,7 @@ const latestPosts = posts;
 							data-title={post.data.title.toLowerCase()}
 							data-description={post.data.description.toLowerCase()}
 						>
-							<a href={`/kfoodie/blog/${post.slug}`} class="block relative rounded-3xl overflow-hidden aspect-[4/3] mb-6 bg-gray-100">
+							<a href={`/blog/${post.slug}`} class="block relative rounded-3xl overflow-hidden aspect-[4/3] mb-6 bg-gray-100">
 								{post.data.image && (
 									<img 
 										src={post.data.image} 
@@ -98,7 +98,7 @@ const latestPosts = posts;
 								</div>
 								
 								<h3 class="text-xl font-bold text-gray-900 leading-snug group-hover:text-primary transition-colors">
-									<a href={`/kfoodie/blog/${post.slug}`}>
+									<a href={`/blog/${post.slug}`}>
 										{post.data.title}
 									</a>
 								</h3>

@@ -4,7 +4,7 @@ description: "The legendary breakfast toast of Kota Bharu with kaya and half-boi
 pubDate: 2023-10-10
 category: "Cafe"
 tags: ["breakfast", "toast", "coffee", "legendary"]
-image: "/kfoodie/images/roti-titab.png"
+image: "/images/roti-titab.png"
 ---
 
 # Roti Titab

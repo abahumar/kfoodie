@@ -4,7 +4,7 @@ description: "Spicy instant noodles elevated with fresh oysters. A seafood lover
 pubDate: 2023-10-20
 category: "Street Food"
 tags: ["spicy", "seafood", "noodles", "dinner"]
-image: "/kfoodie/images/maggi-tiram.png"
+image: "/images/maggi-tiram.png"
 ---
 
 # Maggi Tiram

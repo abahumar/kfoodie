@@ -4,7 +4,7 @@ description: "Sweet, eggy, and pillow-soft traditional dessert. The authentic ta
 pubDate: 2023-10-15
 category: "Kuih Tradisional"
 tags: ["sweet", "dessert", "traditional"]
-image: "/kfoodie/images/akok.png"
+image: "/images/akok.png"
 ---
 
 # Akok Risda

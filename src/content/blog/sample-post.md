@@ -4,7 +4,7 @@ description: "The best blue rice in town. A must-try when visiting Kota Bharu."
 pubDate: 2023-10-01
 category: "Nasi Kerabu"
 tags: ["breakfast", "spicy", "authentic"]
-image: "/kfoodie/images/nasi-kerabu.jpg"
+image: "/images/nasi-kerabu.jpg"
 ---
 
 # Nasi Kerabu Golok
