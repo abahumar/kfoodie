@@ -12,7 +12,7 @@ const latestPosts = posts.slice(0, 3);
 		<div class="hero-content">
 			<h1>Welcome to KelantanFoodie</h1>
 			<p class="tagline">Discover the best authentic food in Kelantan, from Nasi Kerabu to Colek Malah.</p>
-			<a href="/blog" class="cta-button">Explore Food</a>
+			<a href="/kfoodie/blog" class="cta-button">Explore Food</a>
 		</div>
 		<div class="hero-image-wrapper">
 			<img src="/kfoodie/images/hero.png" alt="Delicious Kelantan Food" class="hero-image" />
@@ -22,19 +22,19 @@ const latestPosts = posts.slice(0, 3);
 	<section class="categories">
 		<h2>Top Categories</h2>
 		<div class="category-grid">
-			<a href="/blog/category/nasi-kerabu" class="category-card">
+			<a href="/kfoodie/blog/category/nasi-kerabu" class="category-card">
 				<span class="emoji">🍚</span>
 				<span>Nasi Kerabu</span>
 			</a>
-			<a href="/blog/category/street-food" class="category-card">
+			<a href="/kfoodie/blog/category/street-food" class="category-card">
 				<span class="emoji">🍢</span>
 				<span>Street Food</span>
 			</a>
-			<a href="/blog/category/cafe" class="category-card">
+			<a href="/kfoodie/blog/category/cafe" class="category-card">
 				<span class="emoji">☕</span>
 				<span>Cafe</span>
 			</a>
-			<a href="/blog/category/kuih-tradisional" class="category-card">
+			<a href="/kfoodie/blog/category/kuih-tradisional" class="category-card">
 				<span class="emoji">🧁</span>
 				<span>Kuih Tradisional</span>
 			</a>
@@ -47,7 +47,7 @@ const latestPosts = posts.slice(0, 3);
 			<ul class="post-grid">
 				{latestPosts.map(post => (
 					<li>
-						<a href={`/blog/${post.slug}`} class="post-card">
+						<a href={`/kfoodie/blog/${post.slug}`} class="post-card">
 							{post.data.image && <img src={post.data.image} alt={post.data.title} />}
 							<div class="post-info">
 								<h3>{post.data.title}</h3>
